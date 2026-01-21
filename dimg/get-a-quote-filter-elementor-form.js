@@ -1,3 +1,38 @@
+// for Radio button filter logic January 21, 2026 Updated Form
+ document.addEventListener('DOMContentLoaded', function () {
+  const form = document.querySelector('.elementor-form');
+  if (!form) return;
+
+  form.addEventListener('submit', function (e) {
+    
+    // 1. Revenue field (Updated ID: field_eb87dc3) / Radio button
+    const selectedRevenue = form.querySelector('[name="form_fields[field_eb87dc3]"]:checked');
+    const revenueValue = selectedRevenue ? selectedRevenue.value : "";
+    const revenueTrigger = (revenueValue === '$100k - $250k' || revenueValue === '$250k - $500k');
+
+    // 2. Web Budget field (Assumed updated to Radio as well)
+    const selectedWebBudget = form.querySelector('[name="form_fields[field_9bd1ddf]"]:checked');
+    const webBudgetValue = selectedWebBudget ? selectedWebBudget.value : "";
+    const webBudgetTrigger = (webBudgetValue === '>$5000');
+
+    // 3. Social Media Budget field (Assumed updated to Radio as well)
+    const selectedSMBudget = form.querySelector('[name="form_fields[field_f11f8a2]"]:checked');
+    const smBudgetValue = selectedSMBudget ? selectedSMBudget.value : "";
+    const smBudgetTrigger = (smBudgetValue === '>$1500' || smBudgetValue === '$1500 - $3,000');
+
+    // Redirect if ANY condition is met
+    const shouldRedirectToNotFit = revenueTrigger || webBudgetTrigger || smBudgetTrigger;
+
+    if (shouldRedirectToNotFit) {
+      e.preventDefault(); 
+      window.location.href = 'https://digitalinnovationmg.com/thank-you/'; 
+    }
+    // Else: Elementor continues with default Dubsado redirect
+  });
+});
+//==============================================================================
+//==============================================================================
+// for Checkbox logic filter
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.querySelector('.elementor-form');
   if (!form) return;
