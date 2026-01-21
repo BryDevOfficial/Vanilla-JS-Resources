@@ -1,3 +1,47 @@
+// logic incase user select or if she check the 'Strategy Power hour checkbox, if check disregard filter logic'
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.querySelector('.elementor-form');
+  if (!form) return;
+
+  form.addEventListener('submit', function (e) {
+    
+    // --- EXCEPTION CHECK (The "Safety Switch") ---
+    // Checkbox ID: field_d29b19c
+    const serviceChecks = form.querySelectorAll('[name="form_fields[field_d29b19c][]"]:checked');
+    const selectedServices = Array.from(serviceChecks).map(input => input.value);
+    
+    // If they selected Strategy Power Hour, we bypass the redirection logic entirely
+    const isStrategyPowerHour = selectedServices.includes('I Need a Strategy Power Hour');
+
+    // 1. Revenue field (Radio button)
+    const selectedRevenue = form.querySelector('[name="form_fields[field_eb87dc3]"]:checked');
+    const revenueValue = selectedRevenue ? selectedRevenue.value : "";
+    const revenueTrigger = (revenueValue === '$100k - $250k' || revenueValue === '$250k - $500k');
+
+    // 2. Web Budget field (Radio button)
+    const selectedWebBudget = form.querySelector('[name="form_fields[field_9bd1ddf]"]:checked');
+    const webBudgetValue = selectedWebBudget ? selectedWebBudget.value : "";
+    const webBudgetTrigger = (webBudgetValue === '>$5000');
+
+    // 3. Social Media Budget field (Radio button)
+    const selectedSMBudget = form.querySelector('[name="form_fields[field_f11f8a2]"]:checked');
+    const smBudgetValue = selectedSMBudget ? selectedSMBudget.value : "";
+    const smBudgetTrigger = (smBudgetValue === '>$1500' || smBudgetValue === '$1500 - $3,000');
+
+    // --- LOGIC GATE ---
+    // Redirect only if (Any Trigger is true) AND (It is NOT a Strategy Power Hour)
+    const shouldRedirectToNotFit = (revenueTrigger || webBudgetTrigger || smBudgetTrigger) && !isStrategyPowerHour;
+
+    if (shouldRedirectToNotFit) {
+      e.preventDefault(); 
+      window.location.href = 'https://digitalinnovationmg.com/thank-you/'; 
+    }
+  });
+});
+
+//==============================================================================
+//==============================================================================
+
 // for Radio button filter logic January 21, 2026 Updated Form
  document.addEventListener('DOMContentLoaded', function () {
   const form = document.querySelector('.elementor-form');
@@ -30,8 +74,10 @@
     // Else: Elementor continues with default Dubsado redirect
   });
 });
+
 //==============================================================================
 //==============================================================================
+
 // for Checkbox logic filter
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.querySelector('.elementor-form');
