@@ -35,23 +35,30 @@
 </style>
 
     <script> 
-      document.addEventListener('DOMContentLoaded', function() {
-            for (let i = 1; i <= 17; i++) {
-                const readMoreLink = document.querySelector('.readmorelessbg-btn' + i);
-                const truncateContainerTxt = document.querySelector('.truncatecontainer' + i);
+    document.addEventListener('DOMContentLoaded', function() {
 
-                if (readMoreLink && truncateContainerTxt) {
-                    readMoreLink.addEventListener('click', function(event) {
-                        event.preventDefault();
-                        if (truncateContainerTxt.classList.contains('expanded')) {
-                            truncateContainerTxt.classList.remove('expanded');
-                            readMoreLink.textContent = 'Read more';
-                        } else {
-                            truncateContainerTxt.classList.add('expanded');
-                            readMoreLink.textContent = 'Show less';
-                        }
-                    });
-                }
-            }
-        });
+  // Wait for Elementor to finish rendering widgets
+  jQuery(window).on('elementor/frontend/init', function() {
+
+    for (let i = 1; i <= 17; i++) {
+      const readMoreLink = document.querySelector('.readmorelessbg-btn' + i);
+      const truncateContainerTxt = document.querySelector('.truncatecontainer' + i);
+
+      if (!readMoreLink || !truncateContainerTxt) continue;
+
+      readMoreLink.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        truncateContainerTxt.classList.toggle('expanded');
+
+        readMoreLink.textContent = truncateContainerTxt.classList.contains('expanded')
+          ? 'Show less'
+          : 'Read more';
+      });
+    }
+
+  });
+
+});
+
     </script>
